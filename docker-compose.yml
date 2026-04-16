@@ -1,0 +1,65 @@
+services:
+  yzj-adapter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: yzj-adapter
+    restart: unless-stopped
+    ports:
+      - "8081:8080"
+    environment:
+      # ═══════════════════════════════════
+      #  云之家配置
+      # ═══════════════════════════════════
+      # 主动发消息 URL（云之家机器人配置页提供）
+      YZJ_SEND_MSG_URL: "https://www.yunzhijia.com/gateway/robot/webhook/send?yzjtype=12&yzjtoken=YOUR_YZJTOKEN"
+      # 签名密钥（云之家机器人配置页提供）
+      YZJ_SECRET: "YOUR_YZJ_SECRET"
+
+      # ═══════════════════════════════════
+      #  Hermes API 配置
+      # ═══════════════════════════════════
+      HERMES_API_BASE: "http://154.201.73.253:8642"
+      HERMES_API_KEY: "YOUR_HERMES_API_KEY"
+      HERMES_MODEL: "hermes-agent"
+
+      # ═══════════════════════════════════
+      #  超时配置
+      # ═══════════════════════════════════
+      # 调用 Hermes API 超时（秒），联网/推理类建议 120+
+      REQUEST_TIMEOUT: "120"
+      # 回发云之家超时（秒）
+      SEND_TIMEOUT: "15"
+
+      # ═══════════════════════════════════
+      #  会话配置
+      # ═══════════════════════════════════
+      # 单会话保留历史轮数（user+assistant 算 2 条）
+      MAX_HISTORY: "10"
+
+      # ═══════════════════════════════════
+      #  WebSocket 配置
+      # ═══════════════════════════════════
+      ENABLE_WEBSOCKET: "true"
+      WS_RECONNECT_SECONDS: "5"
+
+      # ═══════════════════════════════════
+      #  机器人行为
+      # ═══════════════════════════════════
+      BOT_SYSTEM_PROMPT: "你是接入云之家群组的 Hermes 助手。请用简洁中文回答，优先直接解决问题。"
+
+      # ═══════════════════════════════════
+      #  日志
+      # ═══════════════════════════════════
+      LOG_LEVEL: "INFO"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "50m"
+        max-file: "3"
