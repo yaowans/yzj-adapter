@@ -101,7 +101,7 @@ curl http://127.0.0.1:8081/health
   "status": "ok",
   "websocket_enabled": true,
   "websocket_url": "wss://www.yunzhijia.com/xuntong/websocket?yzjtoken=xxx",
-  "hermes_api_base": "http://154.201.73.253:8642",
+  "hermes_api_base": "your_hermes_api_base", #如http://127.0.0.1:8642
   "model": "hermes-agent"
 }
 ```
@@ -157,9 +157,9 @@ curl http://127.0.0.1:8081/health
     "groupType": 2,
     "msgType": 2,
     "robotName": "大龙虾",
-    "groupId": "69b0c026e4b0286ef85f3f47",
-    "msgId": "69df5f0be4b0e2effbc00347",
-    "robotId": "BOT-69b3e1b3e4b025b4019ef897",
+    "groupId": "xxxxx",
+    "msgId": "xxxx",
+    "robotId": "BOT-xxxxx",
     "type": 2,
     "content": "@大龙虾 你好",
     "operatorName": "用户A",
@@ -440,7 +440,6 @@ curl -s http://127.0.0.1:8081/openapi.json | python3 -m json.tool | grep yunzhij
 ## 后续优化方向
 
 - [ ] Redis 替代内存缓存（去重 + 会话）
-- [ ] 天气/新闻查询走专用 API
 - [ ] 消息类型扩展（图片、卡片、文件）
 - [ ] 并发限流与任务队列
 - [ ] Prometheus 监控
